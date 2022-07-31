@@ -1,19 +1,23 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from 'components/Box';
 import { Title } from './Title/Title';
 import { Form } from './Form/Form';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/List';
 
-export class App extends Component  {
-  state = {
-    contacts: [],
-    filter: '',
-  };
+export const App = () => {
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem('contacts'));
+  });
+  const [filter, setFilter] = useState('');
 
-  addContact = contact => {
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+ const addContact = contact => {
     if (
-      this.state.contacts.find(
+     contacts.find(
         cont => cont.name.toLowerCase() === contact.name.toLowerCase(),
       )
     ) {
@@ -21,46 +25,25 @@ export class App extends Component  {
       return;
     }
 
-    this.setState(({ contacts }) => ({
-      contacts: [contact, ...contacts],
-    }));
+    setContacts([contact, ...contacts]);
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
+  const changeFilter = e => {
+    setFilter(e.currentTarget.value );
   };
 
-  getVisibleContact = () => {
-    const { filter, contacts } = this.state;
+  const getVisibleContact = () => {
     const normalFilter = filter.toLowerCase();
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalFilter),
     );
-  };
-
-  deleteContact = contactId => {
-    this.setState(state => ({
-      contacts: state.contacts.filter(contact => contact.id !== contactId),
-    }));
-  };
-
-  componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem("contacts"));
-  
-      if (contacts) {
-        this.setState({ contacts });
-      }
-    }
-  
-  componentDidUpdate(_, state) {
-    const { contacts } = this.state;
-      if (state.contacts !== contacts) {
-        localStorage.setItem("contacts", JSON.stringify(contacts));
-      }
   }
 
-  render() {
-    const visibleContacts = this.getVisibleContact();
+ const deleteContact = (contactId) => {
+    setContacts(prevContacts => prevContacts.filter(contact => contact.id !== contactId))
+  };
+
+    const visibleContacts = getVisibleContact();
 
     return (
       <Box 
@@ -75,11 +58,10 @@ export class App extends Component  {
       flexDirection="column"
       >
       <Title title={'Phonebook'} />
-      <Form onSubmit={this.addContact} />
+      <Form onSubmit={addContact} />
       <Title title={'Contacts'} /> 
-      <Filter value={this.state.filter} onChange={this.changeFilter} />
-      <ContactList contacts={visibleContacts} onDeleteContact={this.deleteContact} />
+      <Filter value={filter} onChange={changeFilter} />
+      <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
      </Box>
     );
   }
-}
