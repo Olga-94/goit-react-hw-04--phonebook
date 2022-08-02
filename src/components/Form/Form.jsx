@@ -1,25 +1,28 @@
 // import React from 'react';
 import PropTypes from 'prop-types';
 import { IoPersonAddOutline } from 'react-icons/io5';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 import {FormContact, Label, Input, Button}  from './Form.styled';
 import { Formik } from 'formik';
 
-const initialValues = {
-     name: '',
-      number: '',
-}
+
 
 export const Form = ({onSubmit}) => {
 
-  const addContact = (values, { reset }) => {
-    values.id = nanoid();
-    onSubmit(values);
-    reset();
-  };
+// const initialValues = {
+//      name: '',
+//      number: '',
+// }
+
+  // const addContact = (values, { reset }) => {
+  //   values.id = nanoid();
+  //   onSubmit(values);
+  //   reset();
+  // };
   
       return (
-        <Formik initialValues={initialValues} onSubmit={addContact}>
+        <Formik initialValues={{name: '',
+        number: ''}} onSubmit={onSubmit}>
         <FormContact>
           <Label>
             Name
