@@ -4,7 +4,6 @@ import { Title } from './Title/Title';
 import { Form } from './Form/Form';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/List';
-import { nanoid } from 'nanoid';
 
 export const App = () => {
   const [contacts, setContacts] = useState(() => {
@@ -16,23 +15,16 @@ export const App = () => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
- const addContact = (values, { reset }) => {
+ const addContact = (contact) => {
     if (
      contacts.find(
-        cont => cont.name.toLowerCase() === values.name.toLowerCase(),
+        cont => cont.name.toLowerCase() === contact.name.toLowerCase(),
       )
     ) {
-      alert(`${values.name} is already in contacts`);
+      alert(`${contact.name} is already in contacts`);
       return;
     }
-
- const profile = {
-    id: nanoid(),
-    name: values.name,
-    number: values.number,
-  };
-  setContacts(state => [...state, profile]);
-    reset();
+    setContacts([contact, ...contacts]);
   };
 
   const changeFilter = e => {
