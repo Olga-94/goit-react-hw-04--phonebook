@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-
+import styled from 'styled-components'
 
 export const FormContact = styled.form``;
 
@@ -7,6 +6,7 @@ export const Label = styled.label`
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
+  margin-right: 10px;
 `;
 
 export const Input = styled.input`

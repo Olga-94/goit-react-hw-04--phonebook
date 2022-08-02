@@ -1,23 +1,23 @@
-// import React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { IoPersonAddOutline } from 'react-icons/io5';
 import { nanoid } from 'nanoid';
-import {FormContact, Label, Input, Button}  from './Form.styled';
-import { Formik } from 'formik';
+import { Label, Button}  from './Form.styled';
+import { Formik, Field, Form } from 'formik';
 
-export const Form = ({onSubmit}) => {
-  const addContact = (values, { reset }) => {
+export const BaseForm = ({onSubmit}) => {
+  const addContact = (values, { resetForm }) => {
     values.id = nanoid();
     onSubmit(values);
-    reset();
+    resetForm();
   };
   
       return (
         <Formik initialValues={{name: '', number: ''}} onSubmit={addContact}>
-        <FormContact>
+        <Form>
           <Label>
             Name
-            <Input
+            <Field
               type="text"
               name="name"
               pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -27,7 +27,7 @@ export const Form = ({onSubmit}) => {
           </Label>
           <Label>
             Number
-            <Input
+            <Field
               type="tel"
               name="number"
               pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -36,12 +36,12 @@ export const Form = ({onSubmit}) => {
             />
           </Label>
           <Button type="submit"> <IoPersonAddOutline />Add contact</Button>
-        </FormContact>
+        </Form>
         </Formik>
       );
     
   }
   
-  Form.propTypes = {
+  BaseForm.propTypes = {
     onSubmit: PropTypes.func,
   };

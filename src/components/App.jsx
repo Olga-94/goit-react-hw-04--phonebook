@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Box } from 'components/Box';
 import { Title } from './Title/Title';
-import { Form } from './Form/Form';
+import { BaseForm } from './Form/Form';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/List';
 
 export const App = () => {
   const [contacts, setContacts] = useState(() => {
-    return JSON.parse(localStorage.getItem('contacts'));
+    return JSON.parse(localStorage.getItem('contacts')) ?? [];
   });
   const [filter, setFilter] = useState('');
 
@@ -57,7 +57,7 @@ export const App = () => {
       flexDirection="column"
       >
       <Title title={'Phonebook'} />
-      <Form onSubmit={addContact} />
+      <BaseForm onSubmit={addContact} />
       <Title title={'Contacts'} /> 
       <Filter value={filter} onChange={changeFilter} />
       <ContactList contacts={visibleContacts} onDeleteContact={deleteContact} />
